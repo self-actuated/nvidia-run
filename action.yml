@@ -1,0 +1,28 @@
+# Copyright (c) 2022 OpenFaaS Ltd
+name: 'get-kernel-sources'
+description: 'Download the Kernel source to build a kmod or dmks in actuated'
+branding:
+  icon: 'arrow-right-circle'
+  color: 'gray-dark'
+runs:
+    using: 'composite'
+    steps:
+      - name: Install git if not present
+        shell: bash
+        id: install-tmux
+        run: |
+           if ! [ -x "$(command -v git)" ]; then
+            echo Installing git
+            sudo apt update -qqqy && sudo apt install -qqqy git
+           fi
+           
+      - name: Clone Kernel sources and link to /usr/src/linux
+        shell: bash
+        id: download-link-sources
+        run: |
+          sudo mkdir -p /usr/src
+          sudo git clone --depth 1 --branch v$(uname -r) git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git /usr/src/linux
+          sudo rm /lib/modules/$(uname -r)/build
+          sudo ln -s /usr/src/linux-headers-$(uname -r)/ /lib/modules/$(uname -r)/build
+          sudo rm /lib/modules/$(uname -r)/source
+          sudo ln -s /usr/src/linux-headers-$(uname -r)/ /lib/modules/$(uname -r)/source
