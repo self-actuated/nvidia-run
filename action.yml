@@ -1,28 +1,27 @@
 # Copyright (c) 2022 OpenFaaS Ltd
-name: 'get-kernel-sources'
-description: 'Download the Kernel source to build a kmod or dmks in actuated'
+name: 'nvidia-run'
+description: 'Download and install Nvidia drivers and Kernel modules'
 branding:
   icon: 'arrow-right-circle'
   color: 'gray-dark'
 runs:
     using: 'composite'
     steps:
-      - name: Install git if not present
+      - name: Download .run file
         shell: bash
-        id: install-tmux
+        id: download-nvidia
         run: |
-           if ! [ -x "$(command -v git)" ]; then
-            echo Installing git
-            sudo apt update -qqqy && sudo apt install -qqqy git
-           fi
+           curl -s -S -L -O https://us.download.nvidia.com/XFree86/Linux-x86_64/525.60.11/NVIDIA-Linux-x86_64-525.60.11.run \
+              && chmod +x ./NVIDIA-Linux-x86_64-525.60.11.run
            
-      - name: Clone Kernel sources and link to /usr/src/linux
+      - name: Build and install Nvidia drivers
         shell: bash
-        id: download-link-sources
+        id: install-nvidia
         run: |
-          sudo mkdir -p /usr/src
-          sudo git clone --depth 1 --branch v$(uname -r) git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git /usr/src/linux
-          sudo rm /lib/modules/$(uname -r)/build
-          sudo ln -s /usr/src/linux-headers-$(uname -r)/ /lib/modules/$(uname -r)/build
-          sudo rm /lib/modules/$(uname -r)/source
-          sudo ln -s /usr/src/linux-headers-$(uname -r)/ /lib/modules/$(uname -r)/source
+          sudo ./NVIDIA-Linux-x86_64-525.60.11.run \
+                  --accept-license \
+                  --ui=none \
+                  --no-questions \
+                  --no-x-check \
+                  --no-check-for-alternate-installs \
+                  --no-nouveau-check
