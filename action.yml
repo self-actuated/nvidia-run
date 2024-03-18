@@ -11,8 +11,8 @@ runs:
         shell: bash
         id: download-nvidia
         run: |
-           RET=$(lspci|grep "3D controller")
-           if [ $? == 0 ]
+           RET=$(lspci | grep "3D controller" || true)
+           if [ -n "$RET" ]; then
            then
              curl -o ./NVIDIA-Linux-x86_64.run -s -S -L https://us.download.nvidia.com/tesla/550.54.15/NVIDIA-Linux-x86_64-550.54.15.run \
                 && chmod +x ./NVIDIA-Linux-x86_64.run
@@ -21,8 +21,6 @@ runs:
                && chmod +x ./NVIDIA-Linux-x86_64.run
            fi
            chmod +x ./NVIDIA-Linux-x86_64.run
-
-           exit 0
 
       - name: Build and install Nvidia drivers
         shell: bash
