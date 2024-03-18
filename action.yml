@@ -26,7 +26,7 @@ runs:
         shell: bash
         id: install-nvidia
         run: |
-          sudo ./NVIDIA-Linux-x86_64.run \
+          sudo -E ./NVIDIA-Linux-x86_64.run \
                   --accept-license \
                   --ui=none \
                   --no-questions \
