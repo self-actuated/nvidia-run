@@ -22,6 +22,8 @@ runs:
            fi
            chmod +x ./NVIDIA-Linux-x86_64.run
 
+           exit 0
+
       - name: Build and install Nvidia drivers
         shell: bash
         id: install-nvidia
