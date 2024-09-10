@@ -19,4 +19,5 @@ sudo -E ./NVIDIA-Linux-x86_64.run \
         --no-questions \
         --no-x-check \
         --no-check-for-alternate-installs \
-        --no-nouveau-check
+        --no-nouveau-check \
+        --no-install-compat32-libs
