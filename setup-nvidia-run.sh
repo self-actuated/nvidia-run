@@ -5,10 +5,10 @@
 RET=$(lspci | grep "3D controller" || true)
 if [ -n "$RET" ]
 then
- curl -o ./NVIDIA-Linux-x86_64.run -s -S -L https://us.download.nvidia.com/tesla/550.54.15/NVIDIA-Linux-x86_64-550.54.15.run \
+ curl -o ./NVIDIA-Linux-x86_64.run -s -S -L https://us.download.nvidia.com/tesla/580.65.06/NVIDIA-Linux-x86_64-580.65.06.run \
     && chmod +x ./NVIDIA-Linux-x86_64.run
 else
- curl -o ./NVIDIA-Linux-x86_64.run -s -S -L -O https://us.download.nvidia.com/XFree86/Linux-x86_64/525.60.11/NVIDIA-Linux-x86_64-525.60.11.run \
+ curl -o ./NVIDIA-Linux-x86_64.run -s -S -L -O https://us.download.nvidia.com/XFree86/Linux-x86_64/580.76.05/NVIDIA-Linux-x86_64-580.76.05.run \
    && chmod +x ./NVIDIA-Linux-x86_64.run
 fi
 chmod +x ./NVIDIA-Linux-x86_64.run
@@ -21,3 +21,6 @@ sudo -E ./NVIDIA-Linux-x86_64.run \
         --no-check-for-alternate-installs \
         --no-nouveau-check \
         --no-install-compat32-libs
+
+# If you run into issues about MMU - or unified memory, add:
+#   --no-unified-memory
