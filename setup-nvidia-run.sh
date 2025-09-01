@@ -20,7 +20,11 @@ sudo -E ./NVIDIA-Linux-x86_64.run \
         --no-x-check \
         --no-check-for-alternate-installs \
         --no-nouveau-check \
-        --no-install-compat32-libs
+        --no-install-compat32-libs \
+        --kernel-module-type=proprietary
 
 # If you run into issues about MMU - or unified memory, add:
 #   --no-unified-memory
+
+# AE: 2025-09-01
+# The --kernel-module-type=proprietary option also suppresses the error, and gives proper working Kernel modules. 
